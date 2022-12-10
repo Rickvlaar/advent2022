@@ -7,15 +7,13 @@ day_file = parse_file_as_list('input/4.txt')
 @time_function()
 def run_a(file):
     assignment_pairs = convert_to_assignments(file)
-    intersecting_assigment_view = intersecting_assigments(assignment_pairs)
-    return sum(intersecting_assigment_view)
+    return intersecting_assigments(assignment_pairs)
 
 
 @time_function()
 def run_b(file):
     assignment_pairs = convert_to_assignments(file)
-    overlapping_assigment_view = overlapping_assigments(assignment_pairs)
-    return sum(overlapping_assigment_view)
+    return overlapping_assignments(assignment_pairs)
 
 
 def convert_to_assignments(file: list[str]):
@@ -23,26 +21,26 @@ def convert_to_assignments(file: list[str]):
 
 
 def intersecting_assigments(assignments: [list[list[tuple]]]):
-    intersecting_pairs = []
+    intersecting_pairs = 0
     for assignment_pair in assignments:
         one = assignment_pair[0]
         two = assignment_pair[1]
 
         if (one[0] <= two[0] <= one[1] and two[1] <= one[1]) or (two[0] <= one[0] <= two[1] and one[1] <= two[1]):
-            intersecting_pairs.append(True)
+            intersecting_pairs += 1
     return intersecting_pairs
 
 
-def overlapping_assigments(assignments: [list[list[tuple]]]):
-    overlapping_assigments = []
+def overlapping_assignments(assignments: [list[list[tuple]]]):
+    overlapping_assigmnents = 0
     for assignment_pair in assignments:
         one = assignment_pair[0]
         two = assignment_pair[1]
 
         if two[0] <= one[0] <= two[1] or one[0] <= two[0] <= one[1] or two[0] <= one[1] <= two[1] or one[0] <= two[1] <= \
                 one[1]:
-            overlapping_assigments.append(True)
-    return overlapping_assigments
+            overlapping_assigmnents += 1
+    return overlapping_assigmnents
 
 
 if __name__ == '__main__':
