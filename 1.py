@@ -16,8 +16,7 @@ def run_b(file):
     elves = split_elves(file)
     summed_elves = [sum(elf_calories) for elf_calories in elves]
     summed_elves.sort(reverse=True)
-    top_three_sum = sum(summed_elves[0:3])
-    return top_three_sum
+    return sum(summed_elves[0:3])
 
 
 def split_elves(file: list[str]) -> list[list[int]]:
