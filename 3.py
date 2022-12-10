@@ -37,7 +37,7 @@ def split_into_elf_groups(rucksacks: list[str]) -> list[list[set[str]]]:
 
 
 def get_common_items_from_elf_groups(rucksacks: list[list[set[str]]]) -> list[str]:
-    return [rucksack[0].intersection(rucksack[1]).intersection(rucksack[2]).pop() for rucksack in rucksacks]
+    return [rucksack[0].intersection(rucksack[1], rucksack[2]).pop() for rucksack in rucksacks]
 
 
 if __name__ == '__main__':
