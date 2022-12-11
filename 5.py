@@ -14,7 +14,9 @@ def run_a(file):
 
 @time_function()
 def run_b(file):
-    pass
+    stacks, instructions = parse_file(file)
+    stacks = crate_mover_9001(stacks, instructions)
+    return get_stack_message(stacks)
 
 
 def parse_file(file: list[str]):
@@ -48,13 +50,27 @@ def follow_instructions(stacks: list[deque[str]], instructions: list[list[int]])
     return stacks
 
 
+def crate_mover_9001(stacks: list[deque[str]], instructions: list[list[int]]):
+    for instruction in instructions:
+        move_count = instruction[0]
+        source_stack_no = instruction[1] - 1
+        target_stack_no = instruction[2] - 1
+
+        items = [stacks[source_stack_no].popleft() for _ in range(move_count)]
+        items.reverse()
+        stacks[target_stack_no].extendleft(items)
+
+    return stacks
+
+
+
 def get_stack_message(stacks: list[deque[str]]):
     return ''.join([stack.popleft() for stack in stacks if stack])
 
 
 if __name__ == '__main__':
     answer_a = run_a(day_file)
-    answer_b = run_b(test_file)
+    answer_b = run_b(day_file)
 
     console.print(f'solution A: {answer_a}')
     console.print(f'solution B: {answer_b}')
