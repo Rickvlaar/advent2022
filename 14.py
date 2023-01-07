@@ -24,11 +24,9 @@ def run_a(file):
 @time_function()
 def run_b(file):
     stone_lines = get_stone_lines(file)
-    stone_map, sand_entry_point = prepare_map(stone_lines)
-    min_x, max_x = get_limits(stone_lines, 0)
-    stone_map = draw_stone_lines(stone_lines, stone_map, min_x)
+    stone_map, sand_entry_point = prepare_map_with_floor(stone_lines)
+    stone_map = draw_stone_lines(stone_lines, stone_map, 0)
     stone_map = drop_sand(stone_map, sand_entry_point)
-    console.print(stone_map)
     return np.where(stone_map == SAND)[0].size
 
 
@@ -53,7 +51,7 @@ def drop_sand(stone_map: np.ndarray, sand_entry_point: tuple):
                             y += 1
                         elif below_right == STONE or below_right == SAND:
                             stone_map[y, x] = SAND
-                            if(y, x) == sand_entry_point:
+                            if(x, y) == sand_entry_point:
                                 dropping = False
                             break
             except IndexError:
@@ -69,6 +67,16 @@ def prepare_map(stone_lines: list[list[tuple]]):
     y_len = max_y
     sand_entry_point = (500 - min_x, 0)
     stone_map = np.full(shape=(y_len + 1, x_len + 1), fill_value=AIR, dtype=str)
+    return stone_map, sand_entry_point
+
+
+def prepare_map_with_floor(stone_lines: list[list[tuple]]):
+    min_y, max_y = get_limits(stone_lines, 1)
+    x_len = 999
+    y_len = max_y + 2
+    sand_entry_point = (500, 0)
+    stone_map = np.full(shape=(y_len + 1, x_len + 1), fill_value=AIR, dtype=str)
+    stone_map[-1] = STONE
     return stone_map, sand_entry_point
 
 
@@ -114,7 +122,7 @@ def int_tuple_from_string_coord(coord: str) -> tuple:
 
 
 if __name__ == '__main__':
-    answer_a = run_a(test_file)
+    answer_a = run_a(day_file)
     answer_b = run_b(day_file)
 
     console.print(f'solution A: {answer_a}')
